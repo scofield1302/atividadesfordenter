@@ -1,0 +1,33 @@
+<!--Crie um programa de contagem regressiva. Peça um número e conte deste número até 0, 
+    usando um loop while no console do navegador.
+    -->
+<!DOCTYPE html>
+<html lang="pt-br">
+    
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Countdown</title>
+
+
+    </head>
+    <body>
+        <h1>Boas vindas ao Countdown, que fará uma contagem regressiva de um número informado por você até 0.</h1>
+        <div id="display"></div>
+        <script>
+            const chosen_Number = parseInt(prompt("Informe um número inteiro, cuja contagem regressiva deverá ser feita até 0."));
+            let countdown = chosen_Number;
+            console.log(`Chosen number: ${chosen_Number} e countdown = ${countdown}`)
+            while (!chosen_Number || isNaN(chosen_Number) || chosen_Number%2 !=0){
+                chosen_Number = parseInt(prompt("Parece que você informou um número inválido. Por favor, informe um número inteiro maior que zero. Exemplo: 18.")).trim().replace(" ","");
+            }
+            while (countdown <= chosen_Number && countdown >=0){
+                document.getElementById("display").innerHTML += countdown + "<br>";
+                countdown--;
+            }
+
+        </script>
+    </body>
+</html>
