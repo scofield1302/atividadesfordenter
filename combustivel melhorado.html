@@ -1,0 +1,222 @@
+<!-- Desafio do sprint : 'Inglês e Lógica da programação' do curso Programação Front-End Ford Enter:
+ O aumento nos preços dos combustíveis é algo que tem preocupado muitas famílias na tomada de decisões ao
+    buscar locais onde abastecer. Você é colaborador da FORD, e, assim como você, existem outros colegas que
+    precisam avaliar:
+    • O consumo necessário em litros para o descolamento da casa para o trabalho
+    • O local mais acessível para abastecimento de combustível
+    • A média de valores de preços de combustíveis na região pesquisada
+    • O gasto diário com combustível (ida e volta) -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio partes 1 e 2</title>
+</head>
+<body>
+    <!--Primeira pergunta, que é a da distância entre a residência e o trabalho-->
+    <label for="distance_hometojob" >Distância em KM</label>  
+    <br>  
+    <input type="number" id="distance_hometojob" placeholder="Distância em km">  
+    <button onclick="pegarDistancia()">Avançar</button>
+    <br>
+    <label for="distance_hometojob"class="custom-label" >Qual a distância em km da sua residência até o seu trabalho?</label>  
+    
+     <!--Segunda pergunta, que é o consumo médio do veículo do User-->
+     <br> <br>
+     <hgroup id="document-avg_consumption">
+     <label for="avg_consumption">Consumo Médio do Veículo</label>
+     <br>
+     <input type="number" id="avg_consumption" placeholder="Consumo Médio do Veículo">
+     <button onclick="verifyConsumption()">Avançar</button>
+     <br>
+     <label for="avg_consumption" class="custom-label">Qual o consumo médio do veículo (Quantos km o veículo faz com 1 litro de combustível)?</label>
+    </hgroup>
+
+    <!--Pergunta em quantos postos a pesquisa foi feita-->
+    <br> 
+    <hgroup id="document-count_Stations">
+    <label for="count_Stations">Em quantos postos você pesquisou?</label>
+    <br>
+    <input type="number" id="count_Stations" placeholder="Quantidade de postos">
+    <button onclick="verifyCountStations()">Avançar</button>
+    <br>
+    </hgroup>
+    <div id="inputsContainer"></div>
+
+    
+
+    <style>
+        body{
+        background-image: url(https://minaspetro.com.br/blog/wp-content/uploads/2017/12/como-escolher-o-melhor-local-para-montar-um-posto-de-combustivel.jpeg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        .custom-label {
+        color: rgb(104, 104, 219); 
+        font-size: 12px; 
+    }
+  
+        }
+        </style>
+   
+    <div id="consumo_Estimado_msg"></div>
+    <div id="valor_MaisBarato_msg"></div>
+    <div id="media_Valores_msg"></div>
+    <div id="gasto_Diario_msg"></div>
+    <script>
+        document.getElementById("distance_hometojob").focus();
+        document.getElementById("document-avg_consumption").style.visibility = "hidden";
+        document.getElementById("document-count_Stations").style.visibility = "hidden";
+        console.log(window.innerWidth+" px");
+
+        function pegarDistancia() {
+            let distancia_Percorrida = document.getElementById("distance_hometojob").value;
+            distancia_Percorrida = distancia_Percorrida.replace(" ","").replace(",",".");
+            // Verifica se foi digitado algo válido
+            console.log(distancia_Percorrida);
+            if (!distancia_Percorrida || isNaN(distancia_Percorrida) || distancia_Percorrida <= 0){
+                alert("Você digitou um valor em branco ou um valor não numérico. Por favor informe a distância em km (apenas números) da sua residência ao seu trabalho. (Ex.: 20.88)");
+                 distancia_Percorrida = distancia_Percorrida.replace(" ","").replace(",",".");
+                 document.getElementById("distance_hometojob").value = null;
+                 document.getElementById("distance_hometojob").focus();
+                 return
+            }
+            else{
+                document.getElementById("document-avg_consumption").style.visibility = "visible";
+                document.getElementById("avg_consumption").focus();
+                document.getElementById("distance_hometojob").disabled = true;
+                return parseFloat(distancia_Percorrida);
+                
+            }
+        }
+
+        function verifyConsumption(){
+            let consumo_Medio = document.getElementById("avg_consumption").value;
+            consumo_Medio = consumo_Medio.replace(" ","").replace(",",".");
+            console.log(consumo_Medio);
+            if (!consumo_Medio || isNaN(consumo_Medio) || consumo_Medio <=0){
+                alert("Você informou um valor não numérico, em branco ou inválido. Por favor, informe o consumo médio, ou seja, quantos quilômetros, em média, o veículo faz com 1 litro de combustível. Ex.: 12,50.");
+                consumo_Medio = consumo_Medio.replace(" ","").replace(",",".");
+                document.getElementById("avg_consumption").value = null;
+                document.getElementById("avg_consumption").focus();            
+            }
+            else{
+                document.getElementById("document-count_Stations").style.visibility = "visible";
+                document.getElementById("count_Stations").focus();
+                const distancia_Percorrida_km = Number(pegarDistancia()); consumo_Medio_gasolina = Number(consumo_Medio);
+                let  consumo_Necessario_Litros = distancia_Percorrida_km/consumo_Medio_gasolina;
+                consumo_Necessario_Litros = consumo_Necessario_Litros.toFixed(2);
+                document.getElementById("avg_consumption").disabled = true;                
+            }
+          
+        }
+
+    function verifyCountStations(){
+        let quantidade_Postos = document.getElementById("count_Stations").value;
+        quantidade_Postos = parseInt(quantidade_Postos);
+        if (!quantidade_Postos || isNaN(quantidade_Postos) || quantidade_Postos <=0 || quantidade_Postos%1 !=0){
+            alert("Você informou um valor inválido. Digite um valor inteiro com relação a quantos postos você pesquisou o preço do abastecimento. (Ex.:4)");
+            document.getElementById("count_Stations").value = null;
+            document.getElementById("count_Stations").focus();
+        }
+        else{
+            parseInt(quantidade_Postos);
+            document.getElementById("count_Stations").disabled = true;
+            return parseInt(quantidade_Postos);
+            startFor();
+        }
+    }
+
+
+
+// Define algumas variáveis que serão preenchidas no laço for
+let menor_valor = Infinity; posto_Maisbarato = ""; soma_Valores = 0;
+
+
+
+//Criar a quantidade de inputs de acordo com o que o usuário definiu em quantidade_postos
+
+function startFor(){
+    const quantidade_Postos = verifyCountStations(); 
+    document.getElementById("count_Stations").addEventListener("input", function(){
+    const container = document.getElementById("inputsContainer");
+    container.innerHTML = "";
+
+    for (let i = 0; i < quantidade_Postos; i++){
+        const input = document.createElement("input");
+        input.type = "number";
+        input.placeholder = `Informe o valor do ${i+1}º posto.`;
+        container.appendChild(input);
+        container.appendChild(document.createElement("br"));
+    }
+    })
+
+}
+
+
+
+startFor();
+
+for (let i=0 ; i < quantidade_Postos;i++){
+    //Pergunta ao usuário o valor pago pela gasolina no posto atual da iteração do laço for e trata os possíveis erros
+    valor_atual = prompt(`Qual foi o valor pesquisado no ${i+1}º posto?`);
+    valor_atual = valor_atual.replace(" ","").replace(",",".");
+    while (!valor_atual || isNaN(valor_atual) || valor_atual <=0){
+        valor_atual = prompt(`Você digitou um valor inválido. Por favor, informe o valor que o ${i+1}º posto cobra por litro de combustível.`);
+        valor_atual = valor_atual.replace(" ","").replace(",",".");
+        }
+        /*Como eu defini que o manor valor já inicia em 0, verifica que a iteração atual está encontrando 0 nessa variável. Se sim, 
+        quer dizer que é a primeira iteração do laço for, então qualquer valor que o usuário informar de preço de combustível
+        será o primeiro, porque qualquer valor digitado será maior que zero.*/
+        if (i == 0){
+            menor_valor = valor_atual;
+            posto_Maisbarato = i+1;
+        }
+        //Se o valor em menor_valor não for zero, quer dizer que já tem alguma coisa lá, então faz 
+        else {
+            /*Ainda na condicional se o valor não for zero, ou seja, não for o primeiro valor, verifica também se
+            esse valor é menor que o menor valor já registrado na variável. Se sim, atualiza a variável menor_valor
+            com esse valor atual, e registra na variável posto_Maisbarato*/
+            if (valor_atual < menor_valor){
+                menor_valor = valor_atual;
+                posto_Maisbarato = i+1;
+            }
+        }
+
+/*Ao final do laço for, adiciono o valor do combustível atual à variável soma_Valores para, ao final de tudo, poder
+fazer a média dos valores nos postos (Soma total/quantidade de postos).*/
+soma_Valores = Number(soma_Valores) + Number(valor_atual);
+
+}
+
+/*Armazeno em uma variável o resultado da multiplicação do menor valor encontrado pelo consumo em litros
+//necessário para o deslocamente da residência ao trabalho (apenas de ida)*/
+let valor_TotalCombustivel = menor_valor * consumo_Necessario_Litros;
+
+//Recebo esse valor e transformo-o em um valor com duas casas decimais
+valor_TotalCombustivel = Number(valor_TotalCombustivel).toFixed(2);
+/*Registro em uma variável a média dos valores cobrados nos postos, já com duas casas decimais
+Como as variáveis soma_Valores e quantidade_postos já estão tratadas para serem valores numéricos,
+A variável não apresentará erros. E já transformo o valor em duas casas decimais também.*/
+const vl_idaevolta = (valor_TotalCombustivel*2).toFixed(2);
+media_Valores = (soma_Valores/quantidade_Postos).toFixed(2);
+menor_valor = parseFloat(menor_valor).toFixed(2);
+
+const consumo_Estimado_msg = `Para percorrer ${distancia_Percorrida} km, serão necessários ${consumo_Necessario_Litros} litros de combustível.`;
+const valor_MaisBarato_msg = `O posto mais barato foi o posto ${posto_Maisbarato}, onde a gasolina custava R$${menor_valor}.`;
+const media_Valores_msg = `A Média dos valores pesquisados é R$${media_Valores}.`;
+const gasto_Diario_msg = `O gasto diário (ida e volta) é de R$${vl_idaevolta}.`;
+document.getElementById("consumo_Estimado_msg").innerText = consumo_Estimado_msg;
+document.getElementById("valor_MaisBarato_msg").innerText = valor_MaisBarato_msg;
+document.getElementById("media_Valores_msg").innerText = media_Valores_msg;
+document.getElementById("gasto_Diario_msg").innerText = gasto_Diario_msg;
+console.log(consumo_Estimado_msg);
+console.log(valor_MaisBarato_msg);
+console.log(media_Valores_msg);
+console.log(gasto_Diario_msg);
+    </script>
+</body>
+
+</html>
